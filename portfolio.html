@@ -1,0 +1,4168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L.X. — UI Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/misans-webfont/misans/misans-normal/result.css" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #0D0D0D;
+  --color-bg: #f7f7f7;
+  --color-body: #3D3D3D;
+  --color-muted: #9E9E9E;
+  --color-divider: #E5E5E5;
+  --color-accent: #FF284B;
+  --color-accent-hover: #E01E3E;
+  --color-surface: #F4F4F4;
+  --color-card-bg: #FFFFFF;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: "MiSans Normal", "MiSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --section-padding: clamp(80px, 12vh, 160px);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+.img-css{margin-top: 40px;margin-bottom: 40px;display: grid;
+    place-items: center; /* 同时水平和垂直居中 */
+   /* 或者你需要的高度 */}
+   .my-video{width:100%;}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  text-wrap: pretty;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-primary);
+  background: var(--color-bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Navigation ─── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: f7f7f7;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+ /* border-bottom: 1px solid rgba(229, 229, 229, 0.6); */
+  transition: all 0.3s var(--ease);
+}
+
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom-color: var(--color-divider);
+  padding: 16px 56px;
+}
+
+.nav-logo {
+ font-family: var(--font-mono);
+     font-size: 19px;
+     font-weight: 500;
+     letter-spacing: -0.02em;
+     color: var(--color-primary);
+     text-decoration: none;
+     padding: 8px 12px;
+     border-radius: var(--radius-md);
+     transition: background 0.2s var(--ease);
+}
+
+.nav-logo:hover {
+  background: var(--color-surface);
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  transition: all 0.2s var(--ease);
+}
+
+.nav-links a:hover {
+  color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.nav-links a.active {
+  color: var(--color-accent);
+  background: rgba(255, 40, 75, 0.08);
+}
+
+/* ─── Section Common ─── */
+section {
+  padding: var(--section-padding) 56px;
+  max-width: 1506px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0d0d0d;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.section-label.no-dot::before {
+  display: none;
+}
+
+
+
+/* ─── Reveal Animation ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── 01 Hero ─── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding-top: 120px;
+  padding-bottom: clamp(80px, 10vh, 120px);
+  position: relative;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-visual-inner {
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-visual-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--color-divider);
+}
+
+.hero-visual-ring:nth-child(1) {
+  width: 100%;
+  height: 100%;
+  animation: ring-rotate 60s linear infinite;
+}
+
+.hero-visual-ring:nth-child(2) {
+  width: 75%;
+  height: 75%;
+  animation: ring-rotate 45s linear infinite reverse;
+}
+
+.hero-visual-ring:nth-child(3) {
+  width: 50%;
+  height: 50%;
+  animation: ring-rotate 30s linear infinite;
+}
+
+.hero-visual-ring::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+@keyframes ring-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hero-visual-center {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 6vw, 120px);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--color-primary);
+  text-align: center;
+  z-index: 1;
+}
+
+.hero-visual-center span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 16px;
+}
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5vw, 80px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--color-primary);
+  margin-bottom: 24px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-body);
+  max-width: 520px;
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.hero-btn {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: var(--color-accent);
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.25s var(--ease);
+  border-radius: var(--radius-md);
+}
+
+.hero-btn:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 40, 75, 0.25);
+}
+
+.hero-btn-outline {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--color-primary);
+  text-decoration: none;
+  border: 1px solid var(--color-divider);
+  transition: all 0.25s var(--ease);
+  border-radius: var(--radius-md);
+}
+
+.hero-btn-outline:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--color-muted), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.3; height: 40px; }
+  50% { opacity: 1; height: 56px; }
+}
+
+/* ─── 02 About ─── */
+#about {
+  background: #f7f7f7;
+  max-width: none;
+  padding-left: calc((100% - 1506px) / 2 + 56px);
+  padding-right: calc((100% - 1506px) / 2 + 56px);
+}
+
+.about {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 80px;
+  align-items: start;
+  max-width: 1506px;
+  margin: 0 auto;
+}
+
+.about-photo {
+  grid-column: 2;
+  width: 258px;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(135deg, #F0F0F0 0%, #E8E8E8 100%);
+  border: 1px solid var(--color-divider);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-content h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+
+.about-content h2 em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.about-text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--color-body);
+}
+
+.about-text p + p {
+  margin-top: 20px;
+}
+
+.about-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--color-divider);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: 70px;
+}
+
+.about-specs-item {
+  background: #f7f7f7;
+  padding: 22px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.about-specs-item span:first-child {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.about-specs-item span:last-child {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+/* ─── 03 Philosophy ─── */
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.philosophy-card {
+  padding: 48px 36px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+}
+
+.philosophy-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.philosophy-number {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--color-accent);
+  opacity: 0.15;
+  line-height: 1;
+  margin-bottom: 24px;
+  transition: opacity 0.35s var(--ease);
+}
+
+.philosophy-card:hover .philosophy-number {
+  opacity: 0.35;
+}
+
+.philosophy-card h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.philosophy-card p {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-body);
+  line-height: 1.75;
+}
+
+/* ─── 04 Showcase Filter ─── */
+.showcase-filters {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 32px;
+  background: var(--color-surface);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.showcase-filter-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s var(--ease);
+  border-radius: var(--radius-sm);
+}
+
+.showcase-filter-btn:hover {
+  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.showcase-filter-btn.active {
+  color: var(--color-primary);
+  background: var(--color-card-bg);
+}
+
+/* ─── 04 Showcase Grid ─── */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.project-card {
+  position: relative;
+  border: none;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+}
+
+.project-card.hidden {
+  display: none;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.project-card-cover {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, #F8F8F8 0%, #EFEFEF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+.project-card:hover .project-card-cover img {
+  transform: scale(1.04);
+}
+
+/* ─── Tablet Mockup ─── */
+.tablet-mockup {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #2D2D2D;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 12px 12px 16px;
+  gap: 0;
+}
+
+.tablet-mockup-camera {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.tablet-mockup-camera::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #444;
+}
+
+.tablet-mockup-screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.tablet-mockup-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s var(--ease);
+}
+
+.project-card:hover .tablet-mockup-screen img {
+  transform: scale(1.03);
+}
+
+.tablet-mockup-home {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+
+.tablet-mockup-home::after {
+  content: '';
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  background: #555;
+}
+
+.project-card-arrow {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: var(--color-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(8px, -8px) scale(0.8);
+  transition: all 0.35s var(--ease);
+}
+
+.project-card:hover .project-card-arrow {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+.project-card-info {
+  padding: 20px 24px;
+}
+
+.project-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  transition: color 0.25s var(--ease);
+}
+
+.project-card:hover .project-card-title {
+  color: var(--color-accent);
+}
+
+.project-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.project-card-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-body);
+  padding: 5px 10px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+}
+
+.project-card-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+/* ─── Project Detail Overlay ─── */
+.project-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--color-bg);
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+}
+
+.project-detail.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.project-detail-inner {
+  max-width: 1506px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* ─── Detail Hero Wrap ─── */
+.detail-hero-wrap {
+display: flex;
+  padding-top: 48px;
+  padding-bottom: 64px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.detail-hero-wrap .detail-hero {
+  margin-bottom: 32px;    
+  padding-right: 40px;
+  width: 50%;
+  margin-top: 42px;
+}
+
+.detail-hero-wrap .detail-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.detail-hero-wrap .detail-hero-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.detail-hero-wrap .detail-hero-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.detail-hero-wrap .detail-hero-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  border: 1px solid var(--color-divider);
+  color: var(--color-body);
+}
+
+.detail-hero-wrap .detail-hero h2 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+.detail-hero-wrap .detail-hero-desc {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--color-body);
+  line-height: 1.8;
+  max-width: 680px;
+}
+
+.detail-hero-wrap .detail-hero-cover {
+  width:50%;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.detail-hero-wrap .detail-hero-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── Detail Hero Horizontal Layout ─── */
+.detail-hero-wrap.horizontal {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.detail-hero-wrap.horizontal .detail-hero {
+  width: 50%;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.detail-hero-wrap.horizontal .detail-hero-cover {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+.detail-hero-wrap.horizontal .detail-hero h2 {
+  font-size: clamp(32px, 4vw, 48px);
+}
+
+.detail-hero-wrap.horizontal .detail-hero-desc {
+  font-size: 17px;
+  max-width: none;
+}
+
+@media (max-width: 900px) {
+  .detail-hero-wrap.horizontal {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .detail-hero-wrap.horizontal .detail-hero {
+    width: 100%;
+  }
+  .detail-hero-wrap.horizontal .detail-hero-cover {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.project-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-body);
+  text-decoration: none;
+  padding: 28px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+}
+
+.project-detail-back:hover {
+  color: var(--color-primary);
+}
+
+.project-detail-back svg {
+  transition: transform 0.2s var(--ease);
+}
+
+.project-detail-back:hover svg {
+  transform: translateX(-3px);
+}
+
+.detail-tablet-mockup {
+  background: #1A1A1A;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 18px 18px 26px;
+}
+
+.detail-tablet-camera {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 14px;
+}
+
+.detail-tablet-camera::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.detail-tablet-screen {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.detail-tablet-screen img {
+  width: 100%;
+  display: block;
+}
+
+.detail-tablet-home {
+  display: flex;
+  justify-content: center;
+  padding-top: 14px;
+}
+
+.detail-tablet-home::after {
+  content: '';
+  width: 32px;
+  height: 5px;
+  border-radius: 3px;
+  background: #444;
+}
+
+.detail-body {
+  padding-top: 64px;
+  padding-bottom: clamp(80px, 12vh, 140px);
+}
+
+.detail-content h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.detail-content h3:not(:first-child) {
+  margin-top: 56px;
+}
+
+.detail-content p {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--color-body);
+  line-height: 1.9;
+}
+
+.detail-content p + p {
+  margin-top: 20px;
+}
+
+/* ─── Project Detail Modules ─── */
+/* Section Divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 120px 0 24px;
+}
+
+.section-divider:first-child { margin-top: 0; }
+
+.section-divider-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Pain Point Grid */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.pain-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 16px;
+  padding: 20px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md);
+  transition: all 0.35s var(--ease);
+}
+
+.pain-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.pain-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.pain-content h4 {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+
+.pain-content p {
+  font-size: 13px;
+  color: var(--color-body);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Industry Analysis */
+.industry-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.industry-stat {
+  padding: 32px 20px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: left;
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+}
+
+.industry-stat:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.industry-stat-value {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.industry-stat-value span {
+  font-size: 22px;
+  color: var(--color-accent);
+}
+
+.industry-stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 14px;
+}
+
+/* Competitor Matrix */
+.competitor-grid {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(3, 1fr);
+  gap: 1px;
+  margin: 24px 0;
+  background: var(--color-divider);
+  border: 1px solid var(--color-divider);
+}
+
+.competitor-header {
+  background: var(--color-surface);
+  padding: 14px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.competitor-cell {
+  background: var(--color-bg);
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.competitor-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.competitor-score {
+  display: flex;
+  align-items: center;
+}
+
+.score-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--color-accent);
+}
+
+.score-dot { display: none; }
+
+/* Design Goals */
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.overview-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.overview-card {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+  padding: 24px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: left;
+  align-items: start;
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+}
+
+.overview-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.overview-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+.overview-icon span {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.overview-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.overview-desc {
+  font-size: 14px;
+  color: var(--color-body);
+  line-height: 1.7;
+}
+
+/* ─── Device Mockups ─── */
+.device-showcase {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 0;
+  margin: 32px 0;
+  background: linear-gradient(180deg, #f8fafb 0%, #eef2f5 100%);
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Desktop Monitor */
+.device-desktop {
+  position: relative;
+  width: 480px;
+}
+
+.device-desktop-frame {
+  background: #2C3B4E;
+  border-radius: 8px 8px 0 0;
+  padding: 12px 12px 0;
+  position: relative;
+}
+
+.device-desktop-frame::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 4px;
+  background: #4D5E73;
+  border-radius: 2px;
+}
+
+.device-desktop-screen {
+  background: #fff;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+}
+
+.device-desktop-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.device-desktop-base {
+  background: #2C3B4E;
+  height: 20px;
+  border-radius: 0 0 4px 4px;
+}
+
+.device-desktop-stand {
+  background: #2C3B4E;
+  width: 80px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+.device-desktop-foot {
+  background: #2C3B4E;
+  width: 160px;
+  height: 8px;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+/* Tablet */
+.device-tablet {
+  position: relative;
+  width: 240px;
+}
+
+.device-tablet-frame {
+  background: #2C3B4E;
+  border-radius: 12px;
+  padding: 8px;
+  position: relative;
+}
+
+.device-tablet-screen {
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.device-tablet-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile */
+.device-mobile {
+  position: relative;
+  width: 120px;
+}
+
+.device-mobile-frame {
+  background: #2C3B4E;
+  border-radius: 16px;
+  padding: 6px;
+  position: relative;
+}
+
+.device-mobile-frame::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
+  background: #4D5E73;
+  border-radius: 2px;
+}
+
+.device-mobile-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 4px;
+  background: #4D5E73;
+  border-radius: 2px;
+}
+
+.device-mobile-screen {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 9/16;
+}
+
+.device-mobile-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.goal-card {
+  padding: 28px 24px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: left;
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+}
+
+.goal-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.goal-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+.goal-icon span {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.goal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.goal-desc {
+  font-size: 14px;
+  color: var(--color-body);
+  line-height: 1.7;
+}
+
+/* Architecture Flow */
+.arch-flow {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  margin: 24px 0;
+}
+
+.arch-step {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.arch-box {
+  flex: 1;
+  padding: 20px 18px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s var(--ease);
+  border-radius: var(--radius-md);
+}
+
+.arch-box:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.arch-box-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.04em;
+}
+
+.arch-box-desc {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 6px;
+}
+
+.arch-arrow {
+  padding: 0 4px;
+  color: var(--color-muted);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  background: transparent;
+}
+
+/* Design Principles */
+.principles-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.principle-card {
+  padding: 24px 18px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: center;
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-md);
+}
+
+.principle-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.principle-num {
+  font-family: var(--font-body);
+  font-size: 26px;
+  color: var(--color-accent);
+  margin-bottom: 10px;
+}
+
+.principle-num svg {
+  stroke: var(--color-accent);
+  width: 26px;
+  height: 26px;
+}
+
+.principle-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+}
+
+/* Layer Stack */
+.layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.layer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s var(--ease);
+  border-radius: var(--radius-sm);
+}
+
+.layer-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.layer-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  min-width: 80px;
+}
+
+.layer-content {
+  font-size: 14px;
+  color: var(--color-body);
+}
+
+.layer-count {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--color-accent);
+}
+
+/* Component Grid */
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.component-card {
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 28px 20px;
+  text-align: center;
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-md);
+}
+
+.component-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.component-count {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--color-accent);
+}
+
+.component-count span { font-size: 20px; }
+
+.component-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-body);
+  margin-top: 8px;
+}
+
+/* Token Grid */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.token-section {
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+}
+
+.token-section-title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+/* Design Spec Grid */
+.design-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 32px 0;
+}
+
+.design-spec-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.design-spec-gallery img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+/* 设计规范轮播 */
+.spec-carousel {
+  position: relative;
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.spec-carousel-viewport {
+  flex: 1;
+  overflow: hidden;
+}
+
+.spec-carousel-track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.5s var(--ease);
+}
+
+.spec-carousel-item {
+  flex: 0 0 calc((100% - 32px) / 3);
+}
+
+.spec-carousel-item img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.spec-carousel-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-divider);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.spec-carousel-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-body);
+  stroke-width: 2;
+}
+
+.spec-carousel-btn:hover:not(.disabled) {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.spec-carousel-btn:hover:not(.disabled) svg {
+  stroke: #fff;
+}
+
+.spec-carousel-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .spec-carousel-item {
+    flex: 0 0 calc((100% - 16px) / 2);
+  }
+  .spec-carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.design-spec-card {
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.design-spec-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.design-spec-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.design-spec-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+}
+
+.design-spec-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+
+.design-spec-image {
+  padding: 16px 20px 20px;
+}
+
+.design-spec-image img {
+  width: 100%;
+  display: block;
+}
+
+/* ─── Core Page Showcase ─── */
+/* ─── Core Pages Showcase (Framer-style Sidebar) ─── */
+.core-page-showcase {
+  display: flex;
+  gap: 60px;
+  margin: 48px -56px 48px 0;
+  width: calc(100% + 250px);
+  align-items: flex-start;
+}
+
+.core-page-sidebar {
+  width: 340px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.core-page-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+}
+
+.core-page-item:last-child {
+  border-bottom: none;
+}
+
+.core-page-item-header {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.core-page-item-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+  transition: color 0.2s var(--ease);
+}
+
+.core-page-item:hover .core-page-item-title,
+.core-page-item.active .core-page-item-title {
+  color: var(--color-accent);
+}
+
+.core-page-item-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core-page-item-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--color-muted);
+  stroke-width: 2;
+  transition: transform 0.4s var(--ease), stroke 0.2s var(--ease);
+}
+
+.core-page-item.active .core-page-item-icon svg {
+  stroke: var(--color-accent);
+  transform: rotate(180deg);
+}
+
+.core-page-item-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: max-height 0.5s var(--ease), opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.core-page-item.active .core-page-item-content {
+  max-height: 400px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.core-page-item-desc {
+  padding-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.core-page-item-desc-title {
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.core-page-item-desc-text {
+  color: var(--color-muted);
+  margin-bottom: 14px;
+}
+
+.core-page-item-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-accent);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), gap 0.2s var(--ease);
+}
+
+.core-page-item.active .core-page-item-link {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.core-page-item-link:hover {
+  gap: 10px;
+}
+
+.core-page-item-link svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+}
+
+/* 右侧图片展示区 - Framer style UI frame */
+.core-page-visual {
+  flex: 1;
+  min-width: 0;
+  background: #0a0a0a;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  aspect-ratio: 18/10;
+}
+
+.core-page-visual-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+/*  padding: 20px; */
+}
+
+.core-page-visual-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  position: absolute;
+}
+
+.core-page-visual-image.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .core-page-showcase {
+    flex-direction: column;
+    gap: 32px;
+    margin: 48px 0;
+    width: 100%;
+  }
+
+  .core-page-sidebar {
+    width: 100%;
+  }
+
+  .core-page-visual {
+    min-height: 300px;
+    aspect-ratio: auto;
+  }
+}
+
+/* ─── Image Lightbox ─── */
+.image-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  overflow: auto;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.image-lightbox.open {
+  display: block;
+}
+
+.image-lightbox-img {
+  display: block;
+  margin: auto;
+  cursor: default;
+}
+
+.image-lightbox-close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 1;
+}
+
+.image-lightbox-close:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.image-lightbox-close svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+}
+
+/* ─── Form Spec Showcase ─── */
+/* 组件规范作用域：使用固定值，不受全局变量修改影响 */
+.comp-spec-scope {
+  font-family: "MiSans Normal", "MiSans", sans-serif;
+}
+
+.comp-spec-scope .form-spec-row,
+.comp-spec-scope .form-spec-group,
+.comp-spec-scope .form-spec-label,
+.comp-spec-scope .form-spec-sublabel,
+.comp-spec-scope .form-spec-field-label,
+.comp-spec-scope .form-spec-input,
+.comp-spec-scope .form-spec-error-text,
+.comp-spec-scope .form-spec-clear-btn,
+.comp-spec-scope .form-spec-checkbox-text,
+.comp-spec-scope .form-spec-toggle-text,
+.comp-spec-scope .form-spec-btn,
+.comp-spec-scope .form-spec-dropdown-trigger-text,
+.comp-spec-scope .form-spec-dropdown-item-text {
+  font-family: "MiSans Normal", "MiSans", sans-serif;
+}
+
+.form-spec-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.form-spec-group {
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  border-radius: 8px;
+  transition: all 0.3s var(--ease);
+}
+
+.form-spec-group:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.form-spec-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3D3D3D;
+  margin-bottom: 12px;
+}
+
+.form-spec-sublabel {
+  font-size: 13px;
+  color: #3D3D3D;
+  margin-top: 6px;
+}
+
+.form-spec-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-spec-row-inline {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.form-spec-field-label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #4D5E73;
+  min-width: 120px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.form-spec-input {
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #2C3B4E;
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-spec-input::placeholder {
+  color: #9E9E9E;
+}
+
+.form-spec-input:hover {
+  border-color: #3D3D3D;
+}
+
+.form-spec-input:focus {
+  border-color: #009688;
+  box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1);
+}
+
+.form-spec-input.error {
+  border-color: #F44335;
+  color: #F44335;
+}
+
+.form-spec-input.error:focus {
+  box-shadow: 0 0 0 3px rgba(244, 67, 53, 0.1);
+}
+
+.form-spec-error-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #F44335;
+  margin-top: 4px;
+}
+
+.form-spec-input-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-spec-input-wrap .form-spec-input {
+  width: 100%;
+}
+
+.form-spec-clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 200;
+  color: #F44335;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 18px;
+}
+
+.form-spec-dropdown-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.form-spec-dropdown-btn svg {
+  width: 12px;
+  height: 6px;
+}
+
+.form-spec-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.form-spec-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-spec-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #E5E5E5;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.form-spec-checkbox:not(.disabled):hover {
+  border-color: #009688;
+}
+
+.form-spec-checkbox.checked {
+  background: #009688;
+  border-color: #009688;
+}
+
+.form-spec-checkbox.checked::after {
+  content: '';
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg);
+  margin-top: -2px;
+}
+
+.form-spec-checkbox.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Radio */
+.form-spec-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-spec-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #E5E5E5;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-spec-radio:not(.disabled):hover {
+  border-color: #009688;
+}
+
+.form-spec-radio.checked {
+  border-color: #009688;
+}
+
+.form-spec-radio.checked::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #009688;
+}
+
+.form-spec-radio.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.form-spec-checkbox-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 20px;
+  color: #4D5E73;
+}
+
+.form-spec-checkbox-text.selected {
+  color: #4D5E73;
+}
+
+.form-spec-checkbox-text.disabled {
+  color: #9E9E9E;
+}
+
+.form-spec-inline-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.form-spec-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-spec-toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 50px;
+  background: #E5E5E5;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.form-spec-toggle.on {
+  background: #009688;
+}
+
+.form-spec-toggle::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s var(--ease);
+}
+
+.form-spec-toggle.on::after {
+  transform: translateX(20px);
+}
+
+.form-spec-toggle-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 20px;
+  color: #4D5E73;
+}
+
+/* Form Buttons */
+.form-spec-btn-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.form-spec-btn {
+  height: 40px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s var(--ease);
+  border: none;
+}
+
+.form-spec-btn-outline {
+  padding: 0 34px;
+  background: #F4F4F4;
+  color: #0D0D0D;
+}
+
+.form-spec-btn-outline:hover {
+  background: #E5E5E5;
+}
+
+.form-spec-btn-primary {
+  padding: 0 55px;
+  background: #009688;
+  color: #fff;
+}
+
+.form-spec-btn-primary:hover {
+  background: #00796B;
+  transform: translateY(-1px);
+}
+
+/* Dropdown Select */
+.form-spec-dropdown-wrap {
+  position: relative;
+  width: 260px;
+}
+
+.form-spec-dropdown-trigger {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #E5E5E5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-spec-dropdown-trigger:hover {
+  border-color: #3D3D3D;
+}
+
+.form-spec-dropdown-trigger.open {
+  border-color: #009688;
+}
+
+.form-spec-dropdown-trigger-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #96A2B2;
+  pointer-events: none;
+}
+
+.form-spec-dropdown-trigger-text.has-value {
+  color: #2C3B4E;
+}
+
+.form-spec-dropdown-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 0.2s var(--ease);
+}
+
+.form-spec-dropdown-trigger.open .form-spec-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.form-spec-dropdown-arrow svg {
+  width: 12px;
+  height: 12px;
+}
+
+.form-spec-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  padding: 5px 0 7px;
+  background: #FFFFFF;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  border: 1px solid #009688;
+  display: none;
+  z-index: 999;
+  box-sizing: border-box;
+}
+
+.form-spec-dropdown-panel.open {
+  display: block;
+}
+
+.form-spec-dropdown-item {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+  transition: background 0.15s;
+  gap: 6px;
+}
+
+.form-spec-dropdown-item-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-spec-dropdown-item-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.form-spec-dropdown-item:hover {
+  background: rgba(0, 150, 136, 0.06);
+}
+
+.form-spec-dropdown-item.selected {
+  color: #009688;
+}
+
+.form-spec-dropdown-item-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #2C3B4E;
+  line-height: 32px;
+}
+
+.form-spec-dropdown-item.selected .form-spec-dropdown-item-text {
+  color: #009688;
+}
+
+/* Component Showcase */
+.component-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.showcase-item {
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  transition: all 0.3s var(--ease);
+}
+
+.showcase-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.showcase-preview {
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+  padding: 16px 20px;
+}
+
+.showcase-btn {
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.showcase-btn.primary { background: var(--color-primary); color: #fff; }
+.showcase-btn.default { background: #fff; color: var(--color-primary); border: 1px solid var(--color-divider); }
+.showcase-btn.ghost { background: transparent; color: var(--color-primary); border: 1px solid var(--color-divider); }
+
+.showcase-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-divider);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-primary);
+}
+
+.showcase-input::placeholder { color: var(--color-muted); }
+
+.showcase-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  background: var(--color-surface);
+  color: var(--color-body);
+  border: 1px solid var(--color-divider);
+}
+
+.showcase-tag.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+.showcase-tag.disabled { opacity: 0.5; }
+
+.showcase-name {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-primary);
+  padding: 14px;
+  border-top: 1px solid var(--color-divider);
+}
+
+/* Results Metrics */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.metric-item {
+  background: var(--color-card-bg);
+  padding: 36px 20px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md);
+  transition: all 0.3s var(--ease);
+}
+
+.metric-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.metric-unit { font-size: 22px; }
+
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 14px;
+}
+
+@media (max-width: 900px) {
+  .pain-grid, .goals-grid, .overview-grid { grid-template-columns: 1fr; }
+  .overview-card { grid-template-columns: 1fr; }
+  .competitor-grid { grid-template-columns: 1fr; }
+  .principles-row { grid-template-columns: repeat(2, 1fr); }
+  .component-showcase { grid-template-columns: 1fr; }
+  .metrics-row { grid-template-columns: repeat(3, 1fr); }
+  .industry-stats { grid-template-columns: 1fr; }
+  .token-grid { grid-template-columns: 1fr; }
+  .component-grid { grid-template-columns: repeat(2, 1fr); }
+  .arch-flow { flex-direction: column; }
+  .arch-arrow { transform: rotate(90deg); }
+  .form-spec-row-inline { flex-direction: column; gap: 4px; }
+  .form-spec-field-label { text-align: left; min-width: unset; padding-top: 0; }
+  .form-spec-inline-checkboxes { flex-direction: column; gap: 10px; }
+}
+
+.detail-nav {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--color-divider);
+  margin-top: 56px;
+  padding: 0;
+}
+
+@media (max-width: 700px) {
+  .detail-nav {
+    flex-direction: column;
+    margin-top: 40px;
+  }
+  .detail-nav-btn.next {
+    border-left: none;
+    border-top: 1px solid var(--color-divider);
+  }
+}
+
+.detail-nav-btn {
+  position: relative;
+  flex: 1;
+  padding: 36px 40px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-body);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s var(--ease), background-color 0.3s var(--ease);
+  text-align: left;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.detail-nav-btn.next {
+  text-align: right;
+  border-left: 1px solid var(--color-divider);
+}
+
+.detail-nav-btn:hover {
+  color: var(--color-accent);
+  background-color: var(--color-surface);
+}
+
+.detail-nav-btn::before,
+.detail-nav-btn::after {
+  position: absolute;
+  top: 50%;
+  font-family: var(--font-body);
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--color-muted);
+  transition: transform 0.35s var(--ease), color 0.3s var(--ease);
+  pointer-events: none;
+}
+
+.detail-nav-btn.prev::before {
+  content: '←';
+  left: 14px;
+  transform: translateY(-50%);
+}
+
+.detail-nav-btn.next::after {
+  content: '→';
+  right: 14px;
+  transform: translateY(-50%);
+}
+
+.detail-nav-btn.prev:hover::before {
+  transform: translate(-6px, -50%);
+  color: var(--color-accent);
+}
+
+.detail-nav-btn.next:hover::after {
+  transform: translate(6px, -50%);
+  color: var(--color-accent);
+}
+
+.detail-nav-btn span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+  transition: color 0.3s var(--ease);
+}
+
+.detail-nav-btn:hover span {
+  color: var(--color-accent);
+}
+
+/* ─── 05 Specs ─── */
+#specs {
+  background: #ffffff;
+  max-width: none;
+  padding-left: calc((100% - 1506px) / 2 + 56px);
+  padding-right: calc((100% - 1506px) / 2 + 56px);
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1506px;
+  margin: 0 auto;
+}
+
+.spec-item {
+  background: #f8f8f8;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border: 1px solid #eeeeee;
+  border-radius: var(--radius-lg);
+  transition: all 0.3s var(--ease);
+}
+
+.spec-item:hover {
+  border-color: #dddddd;
+  background: #ffffff;
+}
+
+.spec-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.spec-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.spec-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: var(--color-body);
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s var(--ease);
+}
+
+.spec-value:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(255, 40, 75, 0.04);
+}
+
+/* ─── 06 Timeline ─── */
+#experience {
+  background: #ffffff;
+  max-width: none;
+  padding-left: calc((100% - 1506px) / 2 + 56px);
+  padding-right: calc((100% - 1506px) / 2 + 56px);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 48px;
+  max-width: 1506px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: #e0e0e0;
+  border-radius: 1px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 56px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -48px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  border: 2px solid #ffffff;
+  transition: background 0.3s var(--ease);
+}
+
+.timeline-item:first-child::before {
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(255, 40, 75, 0.2);
+}
+
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.timeline-role {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.timeline-company {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-body);
+  margin-bottom: 12px;
+}
+
+.timeline-desc {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-muted);
+  line-height: 1.75;
+  max-width: 560px;
+}
+
+/* ─── 07 Contact ─── */
+.contact {
+  text-align: center;
+  padding: var(--section-padding) 56px;
+  max-width: 1506px;
+  margin: 0 auto;
+}
+
+.contact h2 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+.contact h2 em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.contact-desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-body);
+  max-width: 400px;
+  margin: 0 auto 48px;
+  line-height: 1.75;
+}
+
+.contact-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 16px 40px;
+  background: var(--color-accent);
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s var(--ease);
+  border-radius: var(--radius-md);
+}
+
+.contact-cta:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(255, 40, 75, 0.3);
+}
+
+.contact-cta .arrow {
+  transition: transform 0.3s var(--ease);
+}
+
+.contact-cta:hover .arrow {
+  transform: translate(4px, -4px);
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.contact-links a {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s var(--ease);
+}
+
+.contact-links a:hover {
+  color: var(--color-accent);
+  background: rgba(255, 40, 75, 0.08);
+}
+
+/* ─── Footer ─── */
+footer {
+  padding: 32px 56px;
+  max-width: 1506px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-divider);
+}
+
+footer span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  section { padding-left: 32px; padding-right: 32px; }
+
+  .nav-links { display: none; }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 100px;
+    padding-bottom: 120px;
+  }
+
+  .hero-visual { order: -1; }
+
+  .hero-visual-inner {
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .hero-actions { flex-direction: column; gap: 12px; }
+  .hero-btn, .hero-btn-outline { width: 100%; text-align: center; }
+  .hero-scroll { display: none; }
+
+  .about { grid-template-columns: 1fr; gap: 40px; }
+  .about-photo { max-height: 400px; }
+  .about-specs { grid-template-columns: 1fr; }
+
+  .philosophy-grid { grid-template-columns: 1fr; }
+
+  .showcase-filters { flex-wrap: wrap; gap: 4px; }
+  .showcase-filter-btn { padding: 8px 12px; font-size: 11px; }
+  .showcase-grid { grid-template-columns: 1fr; }
+  .detail-body { padding-bottom: 60px; }
+  .detail-hero h2 { font-size: 32px; }
+  .project-detail-inner { padding: 0 32px; }
+
+  .specs-grid { grid-template-columns: 1fr; }
+
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 36px; }
+  .hero-visual-inner { max-width: 180px; }
+  .contact { padding-left: 32px; padding-right: 32px; }
+  .core-page-image img { max-height: 280px; }
+  .device-showcase { flex-direction: column; align-items: center; gap: 24px; padding: 24px 0; }
+  .device-desktop { width: 100%; max-width: 320px; }
+  .device-tablet { width: 180px; }
+  .device-mobile { width: 90px; }
+}
+
+@media (max-width: 900px) {
+  .pain-grid, .goals-grid, .overview-grid { grid-template-columns: 1fr; }
+  .overview-card { grid-template-columns: 1fr; }
+  .competitor-grid { grid-template-columns: 1fr; }
+  .principles-row { grid-template-columns: repeat(2, 1fr); }
+  .component-showcase { grid-template-columns: 1fr; }
+  .metrics-row { grid-template-columns: repeat(3, 1fr); }
+  .industry-stats { grid-template-columns: 1fr; }
+  .token-grid { grid-template-columns: 1fr; }
+  .component-grid { grid-template-columns: repeat(2, 1fr); }
+  .arch-flow { flex-direction: column; }
+  .arch-arrow { transform: rotate(90deg); }
+  .form-spec-row-inline { flex-direction: column; gap: 4px; }
+  .form-spec-field-label { text-align: left; min-width: unset; padding-top: 0; }
+  .form-spec-inline-checkboxes { flex-direction: column; gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a href="#" class="nav-logo">L.H.</a>
+  <ul class="nav-links">
+    <li><a href="#about">概览</a></li>
+    <li><a href="#philosophy">特性</a></li>
+    <li><a href="#showcase">展示</a></li>
+    <li><a href="#specs">规格</a></li>
+    <li><a href="#experience">版本记录</a></li>
+    <li><a href="#contact">开始使用</a></li>
+  </ul>
+</nav>
+
+<!-- 01 Hero -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <span class="hero-tag reveal">开放合作</span>
+    <h1 class="reveal">把复杂变<em>简单</em></h1>
+    <p class="hero-subtitle reveal">专注 B 端产品、数据可视化大屏与数字孪生智慧城市。兼具三维建模、MG 动画与视频剪辑能力。</p>
+    <div class="hero-actions reveal">
+      <a href="#showcase" class="hero-btn">查看作品</a>
+      <a href="#contact" class="hero-btn-outline">联系我</a>
+    </div>
+  </div>
+  <div class="hero-visual reveal">
+    <div class="hero-visual-inner">
+      <div class="hero-visual-ring"></div>
+      <div class="hero-visual-ring"></div>
+      <div class="hero-visual-ring"></div>
+      <div class="hero-visual-center">
+        L.H.
+        <span>UI / Visualization Designer</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll reveal">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- 02 About -->
+<section id="about">
+  <div class="section-label reveal no-dot" style="justify-content: flex-start;">关于我</div>
+  <div class="about">
+   
+    <div class="about-content">
+      <div class="about-text reveal">
+        <p>你好，我是 李红。我的工作不局限于单一画布——从 B 端 SaaS 产品的界面设计，到数据可视化大屏的信息架构，再到数字孪生智慧城市的三维场景构建，我始终在做同一件事：把复杂的信息变成可感知、可理解、可操作的视觉系统。</p>
+        <p>除了 UI 设计，我同时掌握三维建模、MG 动画和视频剪辑。这意味着我可以在一个项目中同时驾驭界面、三维场景和动态影像，让产品的视觉表达从静态页面延伸到空间和时间的维度。</p>
+      </div>
+      <div class="about-specs reveal">
+        <div class="about-specs-item">
+          <span>经验</span>
+          <span>7 年</span>
+        </div>
+        <div class="about-specs-item">
+          <span>领域</span>
+          <span>B 端 · 可视化 · 数字孪生</span>
+        </div>
+        <div class="about-specs-item">
+          <span>地点</span>
+          <span>北京</span>
+        </div>
+        <div class="about-specs-item">
+          <span>状态</span>
+          <span>开放机会</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-photo reveal"><img src="assets/photo.jpg" alt="李红" style="width: 100%; height: 100%; object-fit: cover;"></div>
+  </div>
+  
+</section>
+
+<!-- 05 Specs -->
+<section id="specs">
+  <div class="section-label reveal">技术规格</div>
+  <div class="specs-grid reveal">
+    <div class="spec-item">
+      <span class="spec-label">UI 设计</span>
+      <div class="spec-values">
+        <span class="spec-value">pixso</span>
+        <span class="spec-value">Sketch</span>
+        <span class="spec-value">Figma</span>
+      </div>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">三维建模</span>
+      <div class="spec-values">
+        <span class="spec-value">C4D</span>
+        <span class="spec-value">Blender</span>
+        <span class="spec-value">SolidWorks</span>
+      </div>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">动效 / 视频</span>
+      <div class="spec-values">
+        <span class="spec-value">After Effects</span>
+        <span class="spec-value">Premiere Pro</span>
+      </div>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">数据可视化</span>
+      <div class="spec-values">
+        <span class="spec-value">ECharts</span>
+        <span class="spec-value">DataV</span>
+      </div>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">数字孪生</span>
+      <div class="spec-values">
+        <span class="spec-value">Unreal Engine</span>
+        <span class="spec-value">CityEngine</span>
+        <span class="spec-value">QGIS3</span>
+      </div>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">协作 / 其他</span>
+      <div class="spec-values">
+        <span class="spec-value">pixso</span>
+        <span class="spec-value">蓝湖</span>
+        <span class="spec-value">Design Tokens</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 Experience -->
+<section id="experience">
+  <div class="section-label reveal">版本记录</div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2018 — 至今</div>
+      <div class="timeline-role"> UI / 可视化设计师</div>
+      <div class="timeline-company">北京首信科技股份有限公司</div>
+      <div class="timeline-desc">负责数据可视化大屏与数字孪生项目的视觉设计，涵盖智慧城市、智慧园区等多个场景。同时参与 B 端产品界面的设计系统搭建与组件库维护。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Showcase -->
+<section id="showcase">
+  <div class="section-label reveal">产品展示</div>
+  <div class="showcase-filters reveal">
+    <button class="showcase-filter-btn active" data-filter="all">全部</button>
+    <button class="showcase-filter-btn" data-filter="数据可视化">数据可视化</button>
+    <button class="showcase-filter-btn" data-filter="B端产品">B端产品</button>
+    <button class="showcase-filter-btn" data-filter="三维建模">三维建模</button>
+    <button class="showcase-filter-btn" data-filter="动效视频">动效/视频</button>
+  </div>
+  <div class="showcase-grid reveal">
+    <div class="project-card" data-project="0" data-category="数据可视化">
+      <div class="project-card-cover">
+        <img src="assets/ningde-login.png" alt="智慧城市指挥中心">
+        <span class="project-card-arrow">↗</span>
+      </div>
+      <div class="project-card-info">
+        <div class="project-card-title">智慧城市指挥中心</div>
+        <div class="project-card-meta">
+          <span class="project-card-tag">数据可视化</span>
+          <span class="project-card-year">2024</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-project="1" data-category="B端产品">
+      <div class="project-card-cover">
+        <img src="assets/b-end-cover.png" alt="企业级 SaaS 设计系统">
+        <span class="project-card-arrow">↗</span>
+      </div>
+      <div class="project-card-info">
+        <div class="project-card-title">企业级 SaaS 设计系统</div>
+        <div class="project-card-meta">
+          <span class="project-card-tag">B端产品</span>
+          <span class="project-card-year">2023</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-project="2" data-category="三维建模">
+      <div class="project-card-cover">
+        <img src="assets/img2.png" alt="企业级 SaaS 设计系统">
+        <span class="project-card-arrow">↗</span>
+      </div>
+      <div class="project-card-info">
+        <div class="project-card-title">智慧园区数字孪生</div>
+        <div class="project-card-meta">
+          <span class="project-card-tag">三维建模</span>
+          <span class="project-card-year">2023</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-project="3" data-category="数据可视化">
+      <div class="project-card-cover">
+        <img src="assets/img3.png" alt="企业级 SaaS 设计系统">
+        <span class="project-card-arrow">↗</span>
+      </div>
+      <div class="project-card-info">
+        <div class="project-card-title">应急救援一体机管理系统</div>
+        <div class="project-card-meta">
+          <span class="project-card-tag">可视化大屏</span>
+          <span class="project-card-year">2022</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-project="4" data-category="动效视频">
+      <div class="project-card-cover">
+        <span>[ 项目封面 ]</span>
+        <span class="project-card-arrow">↗</span>
+      </div>
+      <div class="project-card-info">
+        <div class="project-card-title">应急指挥 MG 动画</div>
+        <div class="project-card-meta">
+          <span class="project-card-tag">动效 / 视频</span>
+          <span class="project-card-year">2022</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Project Detail Overlay -->
+<div class="project-detail" id="projectDetail">
+  <div class="project-detail-inner">
+    <button class="project-detail-back" id="detailBack">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5"/></svg>
+      返回项目列表
+    </button>
+
+    <div class="detail-hero-wrap" id="detailHeroWrap">
+      <div class="detail-hero" id="detailHero">
+        <div class="detail-hero-meta">
+          <span class="detail-hero-year" id="detailYear"></span>
+          <div class="detail-hero-tags" id="detailTags"></div>
+        </div>
+        <h2 id="detailTitle"></h2>
+        <p class="detail-hero-desc" id="detailDesc"></p>
+      </div>
+      <div class="detail-hero-cover" id="detailCover"></div>
+    </div>
+
+    <div class="detail-body">
+      <div class="detail-content" id="detailContent"></div>
+    </div>
+
+    <div class="detail-nav" id="detailNav"></div>
+  </div>
+</div>
+
+<!-- 07 Contact -->
+<section class="contact" id="contact">
+  <div class="section-label reveal" style="justify-content: center;">开始使用</div>
+  <h2 class="reveal">一起做点<em>好设计</em></h2>
+  <p class="contact-desc reveal">如果你正在寻找一位能同时驾驭界面设计、数据可视化、三维场景与动态影像的设计师，欢迎随时联系我。</p>
+  <a href="tel:15010393697" class="contact-cta reveal">
+    15010393697 <span class="arrow">↗</span>
+  </a>
+  <div class="contact-links reveal">
+    <a href="mailto:1281116099@qq.com">1281116099@qq.com</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <span>&copy; 2026 L.X.</span>
+  <span>用克制做设计</span>
+</footer>
+
+<script>
+// ─── Project Data ───
+const projects = [
+  {
+    title: '智慧城市指挥中心',
+    year: '2024',
+    tags: ['数据可视化', '大屏设计', 'ECharts'],
+    cover: 'assets/ningde-login.png',
+    heroLayout: 'horizontal',
+    desc: '为宁德时代设计数据可视化大屏系统，涵盖监控告警、AAA业务感知、用户终端感知等核心模块，实现运维数据的实时监控与智能分析。',
+    content: `
+      <!-- 01 项目概述 -->
+      <div class="section-divider"><span class="section-divider-title">项目概述</span></div>
+      <div class="overview-grid">
+        <div class="overview-card"><div class="overview-icon"><span>01</span></div><div><div class="overview-title">项目背景</div><div class="overview-desc">宁德时代作为全球领先的动力电池企业，IT运维团队需要实时监控海量业务系统与终端设备的运行状态。原有监控系统数据分散，告警响应滞后，无法满足快速定位问题的需求。</div></div></div>
+        <div class="overview-card"><div class="overview-icon"><span>02</span></div><div><div class="overview-title">设计目标</div><div class="overview-desc">构建一套统一的数据可视化大屏系统，整合多源运维数据，实现异常实时告警、业务健康度一目了然、终端状态全局掌控。</div></div></div>
+        <div class="overview-card"><div class="overview-icon"><span>03</span></div><div><div class="overview-title">用户角色</div><div class="overview-desc">运维监控人员：实时监控告警，快速定位故障根因。IT管理人员：掌握业务系统整体健康度与SLA达成情况。决策管理层：了解IT投入产出与运维效率指标。</div></div></div>
+      </div>
+
+      <!-- 02 核心页面展示 -->
+      <div class="section-divider"><span class="section-divider-title">核心页面展示</span></div>
+      <p>系统包含监控告警感知、AAA业务感知、用户终端感知和登录页四个核心页面，覆盖运维监控全场景。</p>
+      <div class="core-page-showcase">
+        <div class="core-page-sidebar">
+          <div class="core-page-item active" data-index="0">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">监控告警感知</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">实时展示系统告警分布与趋势，支持按告警级别、来源系统、时间范围进行筛选，帮助运维人员快速定位异常。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">采用左中右三栏布局，中央为告警趋势图与分布饼图，左侧为实时告警列表，右侧为告警统计卡片。告警级别使用红橙黄三色编码，确保紧急告警第一时间被识别。</div>
+              </div>
+                          </div>
+          </div>
+          <div class="core-page-item" data-index="1">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">AAA业务感知</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">监控认证、授权、计费三大模块的运行状态，展示AAA服务的可用性、响应时间、成功率等核心指标。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">顶部为整体健康度仪表盘，中部为各业务模块的状态卡片，底部为实时日志流。健康度以百分比和颜色双重表达，让业务状态一目了然。</div>
+              </div>
+                          </div>
+          </div>
+          <div class="core-page-item" data-index="2">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">用户终端感知</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">监控全网终端设备的在线状态、性能指标与使用情况，支持按部门、设备类型、操作系统等维度下钻分析。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">左侧为终端分布地图，右侧为指标趋势图与设备列表。地图采用散点图叠加热力图，直观呈现终端地理分布与密度。</div>
+              </div>
+                          </div>
+          </div>
+          <div class="core-page-item" data-index="3">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">登录页</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">系统统一入口，支持账号密码、SSO单点登录等多种认证方式，展示系统品牌形象。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">左侧为品牌展示区，右侧为登录表单。背景采用科技感渐变，与内页大屏风格保持一致，强化整体视觉识别。</div>
+              </div>
+                          </div>
+          </div>
+        </div>
+        <div class="core-page-visual">
+          <div class="core-page-visual-inner">
+            <img class="core-page-visual-image active" src="assets/ningde-monitor.png" alt="监控告警感知" data-index="0">
+            <img class="core-page-visual-image" src="assets/ningde-aaa.png" alt="AAA业务感知" data-index="1">
+            <img class="core-page-visual-image" src="assets/ningde-terminal.jpg" alt="用户终端感知" data-index="2">
+            <img class="core-page-visual-image" src="assets/ningde-login.png" alt="登录页" data-index="3">
+          </div>
+        </div>
+      </div>   
+    `
+  },
+  {
+    title: '企业级 SaaS 设计系统',
+    year: '2023',
+    tags: ['B 端产品', '设计系统', '组件库'],
+    cover: 'assets/b-end-cover.png',
+    deviceCover: true,
+    desc: '为某企业级 SaaS 平台从 0 到 1 搭建设计系统，统一 3 条产品线的视觉语言，输出 120+ 组件，设计与前端协作效率提升 50%。',
+    content: `
+      <!-- 01 项目概述 -->
+      <div class="section-divider"><span class="section-divider-title">项目概述</span></div>
+      <div class="overview-grid">
+        <div class="overview-card"><div class="overview-icon"><span>01</span></div><div><div class="overview-title">项目背景</div><div class="overview-desc">客户是一家企业级 SaaS 服务提供商，拥有 3 条核心产品线。各产品线由独立团队负责，长期以来各自演进，形成了明显的视觉割裂。存在视觉割裂、重复建设、协作低效、扩展困难四大痛点。</div></div></div>
+        <div class="overview-card"><div class="overview-icon"><span>02</span></div><div><div class="overview-title">设计目标</div><div class="overview-desc">视觉统一：建立一致视觉语言，降低认知成本，强化品牌识别。效率提升：组件复用减少重复工作，加速设计到开发流程。灵活扩展：Token 化便于主题定制，适应多客户多场景需求。</div></div></div>
+        <div class="overview-card"><div class="overview-icon"><span>03</span></div><div><div class="overview-title">用户角色</div><div class="overview-desc">业务操作员：日常审批、录入、查询，需要清晰一致的界面。系统管理员：配置权限与业务参数，需要高效批量操作与明确反馈。决策管理层：通过仪表盘了解全局，需要直观的数据呈现。</div></div></div>
+      </div>
+
+      <!-- 02 设计过程与方法 -->
+      <div class="section-divider"><span class="section-divider-title">设计过程与方法</span></div>
+      <p>采用原子设计方法论，从底层 Token 到上层模板逐级构建，确保设计系统的可扩展性与一致性。</p>
+      <div class="arch-flow">
+        <div class="arch-step"><div class="arch-box"><span class="arch-box-title">调研分析</span><span class="arch-box-desc">用户访谈 · 痛点梳理</span></div><span class="arch-arrow">→</span></div>
+        <div class="arch-step"><div class="arch-box"><span class="arch-box-title">策略制定</span><span class="arch-box-desc">设计目标 · 架构规划</span></div><span class="arch-arrow">→</span></div>
+        <div class="arch-step"><div class="arch-box"><span class="arch-box-title">系统搭建</span><span class="arch-box-desc">Token · 原子 · 分子</span></div><span class="arch-arrow">→</span></div>
+        <div class="arch-step"><div class="arch-box"><span class="arch-box-title">验证迭代</span><span class="arch-box-desc">可用性测试 · 持续优化</span></div></div>
+      </div>
+      
+      <!-- 用户研究与需求洞察 -->
+      <div class="section-divider"><span class="section-divider-title">用户研究与需求洞察</span></div>
+      <p>通过深度访谈与行为数据分析，挖掘三类核心用户的关键诉求与使用场景。</p>
+      <div class="goals-grid">
+        <div class="goal-card"><div class="goal-icon"><span>01</span></div><div class="goal-title">访谈发现</div><div class="goal-desc">与5名核心用户进行一对一深度访谈，发现跨产品切换时界面风格差异导致的认知负担是最主要的痛点。</div></div>
+        <div class="goal-card"><div class="goal-icon"><span>02</span></div><div class="goal-title">行为数据</div><div class="goal-desc">分析 3 个月的操作日志，发现高频操作集中在表单填写、列表筛选和数据导出，这三类场景需优先优化。</div></div>
+        <div class="goal-card"><div class="goal-icon"><span>03</span></div><div class="goal-title">需求优先级</div><div class="goal-desc">结合访谈与数据分析，将需求按影响范围与频次排序，确立「一致性优先、效率次之、扩展兜底」的优先级策略。</div></div>
+      </div>
+      <div class="design-spec-grid">
+        <div class="design-spec-card">
+          <div class="design-spec-header">
+            <span class="design-spec-title">用户旅程图</span>
+          </div>
+          <div class="design-spec-image">
+            <img src="assets/user-journey.svg" alt="用户旅程图">
+          </div>
+        </div>
+        <div class="design-spec-card">
+          <div class="design-spec-header">
+            <span class="design-spec-title">需求优先级矩阵</span>
+          </div>
+          <div class="design-spec-image">
+            <img src="assets/priority-matrix.svg" alt="需求优先级矩阵">
+          </div>
+        </div>
+      </div>
+
+      <!-- 07 设计规范 -->
+      <div class="section-divider"><span class="section-divider-title">设计规范</span></div>
+      <p>建立完整的 Design Token 体系，覆盖颜色、字体、阴影、间距四大维度。</p>
+      <div class="spec-carousel">
+        <button class="spec-carousel-btn prev" id="specPrev">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="spec-carousel-viewport">
+          <div class="spec-carousel-track" id="specTrack">
+            <div class="spec-carousel-item"><img src="assets/design-spec-colors.png" alt="Colors 色板系统"></div>
+            <div class="spec-carousel-item"><img src="assets/design-spec-elevation.png" alt="Elevation 阴影层级"></div>
+            <div class="spec-carousel-item"><img src="assets/design-spec-typography.png" alt="Typography 字体规范"></div>
+            <div class="spec-carousel-item"><img src="assets/design-spec-spacing.png" alt="Spacing 间距系统"></div>
+          </div>
+        </div>
+        <button class="spec-carousel-btn next" id="specNext">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <!-- 08 组件规范 -->
+      <div class="section-divider"><span class="section-divider-title">组件规范</span></div>
+      <p>每个组件遵循统一的状态定义与尺寸规范。</p>
+
+
+      <div class="form-spec-row comp-spec-scope">
+        <!-- 输入框 -->
+        <div class="form-spec-group">
+          <div class="form-spec-fields">
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label">输入框</span>
+              <div class="form-spec-input-wrap">
+                <input class="form-spec-input" type="text" placeholder="请输入内容">
+              </div>
+            </div>
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label" style="color: var(--color-accent);"></span>
+              <div class="form-spec-error-text">错误提示：该字段格式不正确</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="form-spec-group">
+          <div class="form-spec-fields">
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label">复选框</span>
+              <div class="form-spec-inline-checkboxes">
+                <div class="form-spec-checkbox-row"><div class="form-spec-checkbox"></div><span class="form-spec-checkbox-text">未选</span></div>
+                <div class="form-spec-checkbox-row"><div class="form-spec-checkbox" style="border-color: #009688;"></div><span class="form-spec-checkbox-text">hover</span></div>
+                <div class="form-spec-checkbox-row"><div class="form-spec-checkbox checked"></div><span class="form-spec-checkbox-text selected">已选</span></div>
+                <div class="form-spec-checkbox-row"><div class="form-spec-checkbox disabled"></div><span class="form-spec-checkbox-text disabled">禁用</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Radio -->
+        <div class="form-spec-group">
+          <div class="form-spec-fields">
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label">单选</span>
+              <div class="form-spec-inline-checkboxes">
+                <div class="form-spec-radio-row"><div class="form-spec-radio"></div><span class="form-spec-checkbox-text">未选</span></div>
+                <div class="form-spec-radio-row"><div class="form-spec-radio checked"></div><span class="form-spec-checkbox-text selected">已选</span></div>
+                <div class="form-spec-radio-row"><div class="form-spec-radio disabled"></div><span class="form-spec-checkbox-text disabled">禁用</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toggle -->
+        <div class="form-spec-group">
+          <div class="form-spec-fields">
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label">开关</span>
+              <div style="display: flex; gap: 24px; align-items: center;">
+                <div class="form-spec-toggle-row"><div class="form-spec-toggle on"></div><span class="form-spec-toggle-text">开启</span></div>
+                <div class="form-spec-toggle-row"><div class="form-spec-toggle"></div><span class="form-spec-toggle-text">关闭</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-spec-group">
+          <div class="form-spec-fields">
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label">按钮</span>
+              <div class="form-spec-btn-row">
+                <button class="form-spec-btn form-spec-btn-outline">重置</button>
+                <button class="form-spec-btn form-spec-btn-primary">提交</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dropdown Select -->
+        <div class="form-spec-group">
+          <div class="form-spec-fields">
+            <div class="form-spec-row-inline">
+              <span class="form-spec-field-label">下拉选择</span>
+              <div class="form-spec-dropdown-wrap">
+                <div class="form-spec-dropdown-trigger">
+                  <span class="form-spec-dropdown-trigger-text">请选择</span>
+                  <span class="form-spec-dropdown-arrow"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 4.5L6 7.5L9 4.5" stroke="#4D5E73" stroke-opacity="0.65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
+                <div class="form-spec-dropdown-panel">
+                  <div class="form-spec-dropdown-item" data-value="1"><span class="form-spec-dropdown-item-icon"></span><span class="form-spec-dropdown-item-text">下拉菜单一</span></div>
+                  <div class="form-spec-dropdown-item selected" data-value="2"><span class="form-spec-dropdown-item-icon"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="17" height="17" rx="2" fill="#009688" stroke="#009688"/><path d="M5 9L8 12L13 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="form-spec-dropdown-item-text">下拉菜单二</span></div>
+                  <div class="form-spec-dropdown-item" data-value="3"><span class="form-spec-dropdown-item-icon"></span><span class="form-spec-dropdown-item-text">下拉菜单三</span></div>
+                  <div class="form-spec-dropdown-item" data-value="4"><span class="form-spec-dropdown-item-icon"></span><span class="form-spec-dropdown-item-text">下拉菜单四</span></div>
+                  <div class="form-spec-dropdown-item" data-value="5"><span class="form-spec-dropdown-item-icon"></span><span class="form-spec-dropdown-item-text">下拉菜单五</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09 核心页面展示 -->
+      <div class="section-divider"><span class="section-divider-title">核心页面展示</span></div>
+      <p>以下是设计系统落地后的典型业务页面，体现组件复用与交互一致性。</p>
+      <div class="core-page-showcase">
+        <div class="core-page-sidebar">
+          <div class="core-page-item active" data-index="0">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">属性配置</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">支持用户配置数据对象的属性字段，包括字段名称、类型、显示格式与校验规则。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">采用卡片式展开收起布局，每条属性独立成卡，点击展开显示完整配置项。</div>
+              </div>
+                          </div>
+          </div>
+          <div class="core-page-item" data-index="1">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">TOTP 安全认证</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">实现基于时间的一次性密码双因素认证流程，增强系统登录安全性。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">分步引导式流程降低操作门槛；二维码扫描区突出展示，配以状态提示。</div>
+              </div>
+                          </div>
+          </div>
+          <div class="core-page-item" data-index="2">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">侧导航优化</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">重构系统侧边导航结构，支持多层级菜单折叠展开。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">遵循「渐进披露」原则，默认只展示一级菜单，点击后展开子级。</div>
+              </div>
+                          </div>
+          </div>
+          <div class="core-page-item" data-index="3">
+            <div class="core-page-item-header">
+              <span class="core-page-item-title">API 权限管理</span>
+              <span class="core-page-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="core-page-item-content">
+              <div class="core-page-item-desc">
+                <div class="core-page-item-desc-title">功能说明</div>
+                <div class="core-page-item-desc-text">支持 API 账号与权限的绑定管理，实现细粒度的接口访问控制。</div>
+                <div class="core-page-item-desc-title">设计思考</div>
+                <div class="core-page-item-desc-text">权限项采用树形勾选，层级关系一目了然；操作按钮区固定底部。</div>
+              </div>
+                          </div>
+          </div>
+        </div>
+        <div class="core-page-visual">
+          <div class="core-page-visual-inner">
+            <img class="core-page-visual-image active" src="assets/page-custom-col.png" alt="属性配置" data-index="0">
+            <img class="core-page-visual-image" src="assets/page-totp.png" alt="TOTP安全认证" data-index="1">
+            <img class="core-page-visual-image" src="assets/page-side-nav.png" alt="侧导航优化" data-index="2">
+            <img class="core-page-visual-image" src="assets/page-api-perm.png" alt="API权限管理" data-index="3">
+          </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    title: '智慧园区数字孪生',
+    year: '2023',
+    tags: ['数字孪生', '三维建模', 'UE'],
+    desc: '为某智慧园区项目构建完整的三维数字孪生场景，涵盖建筑外观、室内空间与设备管线，配合数据驱动实现实时状态可视化。',
+    content: `
+      <h3>项目背景</h3>
+      <p>园区管理方需要一个「数字镜像」来实时监控园区运行状态，包括安防、能耗、设备运维等。传统的 2D 平面图无法直观呈现空间关系和设备位置。</p>
+      <h3>构建流程</h3>
+      <p>基于GIS数据，在 CityEngine完成规则程序建模，经三维建模软件优化调整模型，随后导入 Unreal Engine，搭建可交互的三维浏览场景。重点关注了 LOD 优化，确保在Web端也能流畅运行。</p>
+		<div class="img-css">
+			<img src="assets/img.png">
+		</div>
+      <h3>可视化交互</h3>
+      <p>基于Unreal Engine 5构建的园区数字孪生系统，实现了从宏观到微观的逐级数据下钻交互：首页以高精度三维场景呈现园区全貌，并叠加实时能耗、人流量、设备状态等业务看板；点击任意楼栋，镜头平滑飞入室内，展示楼层机房布局与运行数据；进一步点击机柜，立即高亮并弹出详情面板，清晰罗列内部每台设备的型号、状态、负载及温度曲线，并支持三维空间精准定位。</p>
+    <div class="img-css">
+    	<video class="my-video" src="assets/meeting_quick_record.mp4" controls></video>
+    </div>
+	`
+  },
+  {
+    title: '城市安全态势感知平台',
+    year: '2022',
+    tags: ['可视化大屏', 'GIS', '数据分析'],
+    desc: '为某市应急管理局设计态势感知大屏，融合 GIS 地图、实时告警与历史数据分析，辅助应急指挥决策。',
+    content: `
+      <h3>项目背景</h3>
+      <p>应急管理局需要在指挥中心大屏上实时掌握城市安全态势，包括自然灾害预警、安全生产监控、重大活动保障等多个场景。现有系统数据分散，无法形成全局视角。</p>
+      <h3>信息架构设计</h3>
+      <p>采用「地图优先」的布局策略：GIS 地图占据屏幕主体，叠加实时事件标注与热力图。左侧面板按优先级排列告警信息，右侧面板呈现统计数据与趋势图表。支持「日常监控」和「应急指挥」两种模式的一键切换。</p>
+      <h3>视觉设计</h3>
+      <p>深色主题以降低长时间注视的视觉疲劳，采用蓝绿色系作为主色调以传递「安全/稳定」的心理暗示。告警层级使用红/橙/黄三级色彩编码，确保在 5 米外仍可识别。</p>
+    `
+  },
+  {
+    title: '应急指挥 MG 动画',
+    year: '2022',
+    tags: ['MG 动画', 'After Effects', '视频制作'],
+    desc: '为应急指挥流程制作系列 MG 动画，将复杂的应急预案转化为直观的视觉指引，用于培训与汇报。',
+    content: `
+      <h3>项目背景</h3>
+      <p>应急管理局的预案文档以文字为主，基层人员学习效率低，汇报演示缺乏直观性。需要将核心应急流程转化为动态视觉内容。</p>
+      <h3>动画设计</h3>
+      <p>以扁平化风格为基础，将应急响应流程拆解为可复用的动画模块。每个流程步骤用图标动画 + 箭头指向 + 文字标注三层信息叠加呈现。关键节点使用放大 + 变色强调，确保观众注意力跟随叙事节奏。</p>
+      <h3>成果</h3>
+      <p>共制作 8 支流程动画（单支 2-3 分钟），用于应急演练培训和向上级汇报。相比原有 PPT 汇报，信息传达效率显著提升，培训时长缩短 40%。</p>
+    `
+  }
+];
+
+// ─── Nav scroll state ───
+const nav = document.getElementById('nav');
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+}, { passive: true });
+
+// ─── Reveal on scroll ───
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.dataset.delay || 0;
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, delay);
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: '0px 0px -40px 0px'
+});
+
+function observeReveals() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach((el) => {
+    const parent = el.parentElement;
+    const siblings = Array.from(parent.querySelectorAll(':scope > .reveal'));
+    const index = siblings.indexOf(el);
+    if (index > 0) el.dataset.delay = index * 80;
+    revealObserver.observe(el);
+  });
+}
+observeReveals();
+
+// ─── Smooth scroll for nav links ───
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+    }
+  });
+});
+
+// ─── Project Detail ───
+const detailOverlay = document.getElementById('projectDetail');
+const detailBack = document.getElementById('detailBack');
+let savedScrollPos = 0;
+
+function openProject(index) {
+  const p = projects[index];
+  savedScrollPos = window.scrollY;
+
+  // Layout mode
+  const heroWrap = document.getElementById('detailHeroWrap');
+  if (p.heroLayout === 'horizontal') {
+    heroWrap.classList.add('horizontal');
+  } else {
+    heroWrap.classList.remove('horizontal');
+  }
+
+  // Fill content
+  document.getElementById('detailYear').textContent = p.year;
+  document.getElementById('detailTitle').textContent = p.title;
+  document.getElementById('detailDesc').textContent = p.desc;
+  document.getElementById('detailContent').innerHTML = p.content;
+
+  // Cover image
+  const coverEl = document.getElementById('detailCover');
+  if (p.cover) {
+    if (p.deviceCover) {
+      coverEl.innerHTML = `
+        <div class="device-showcase">
+          <div class="device-desktop">
+            <div class="device-desktop-frame">
+              <div class="device-desktop-screen"><img src="${p.cover}" alt="桌面端"></div>
+            </div>
+            <div class="device-desktop-base"></div>
+            <div class="device-desktop-stand"></div>
+            <div class="device-desktop-foot"></div>
+          </div>
+          <div class="device-tablet">
+            <div class="device-tablet-frame">
+              <div class="device-tablet-screen"><img src="${p.cover}" alt="平板端"></div>
+            </div>
+          </div>
+          <div class="device-mobile">
+            <div class="device-mobile-frame">
+              <div class="device-mobile-screen"><img src="${p.cover}" alt="移动端"></div>
+            </div>
+          </div>
+        </div>`;
+      coverEl.style.overflow = 'visible';
+    } else {
+      coverEl.innerHTML = `<img src="${p.cover}" alt="${p.title}" style="width:100%;display:block;border-radius:8px;">`;
+      coverEl.style.overflow = '';
+    }
+    coverEl.style.background = 'var(--color-bg)';
+    coverEl.style.border = 'none';
+  } else {
+    coverEl.innerHTML = '<img src="assets/img3.png" alt="111" style="width:100%;display:block;border-radius:8px;">';
+    coverEl.style.background = '';
+    coverEl.style.border = '';
+    coverEl.style.overflow = '';
+  }
+
+  // Tags
+  const tagsContainer = document.getElementById('detailTags');
+  tagsContainer.innerHTML = p.tags.map(t =>
+    `<span class="detail-hero-tag">${t}</span>`
+  ).join('');
+
+  // Prev / Next nav
+  const navContainer = document.getElementById('detailNav');
+  let navHTML = '';
+  if (index > 0) {
+    navHTML += `<button class="detail-nav-btn prev" data-goto="${index - 1}">
+      <span>上一个</span>${projects[index - 1].title}
+    </button>`;
+  } else {
+    navHTML += `<div></div>`;
+  }
+  if (index < projects.length - 1) {
+    navHTML += `<button class="detail-nav-btn next" data-goto="${index + 1}">
+      <span>下一个</span>${projects[index + 1].title}
+    </button>`;
+  }
+  navContainer.innerHTML = navHTML;
+
+  // Bind prev/next
+  navContainer.querySelectorAll('.detail-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const gotoIndex = parseInt(btn.dataset.goto);
+      openProject(gotoIndex);
+      detailOverlay.scrollTop = 0;
+    });
+  });
+
+  // Show overlay
+  detailOverlay.scrollTop = 0;
+  detailOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  nav.style.display = 'none';
+
+  // Init spec carousel
+  specIndex = 0;
+  setTimeout(updateSpecCarousel, 50);
+}
+
+function closeProject() {
+  detailOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+  nav.style.display = '';
+  window.scrollTo(0, savedScrollPos);
+}
+
+// ─── Design Spec Carousel ───
+let specIndex = 0;
+const specVisible = 3;
+const specTotal = 4;
+const specMaxIndex = specTotal - specVisible;
+
+function getSpecVisible() {
+  return window.innerWidth <= 900 ? 2 : 3;
+}
+
+function updateSpecCarousel() {
+  const track = document.getElementById('specTrack');
+  if (!track) return;
+
+  const visible = getSpecVisible();
+  const maxIndex = specTotal - visible;
+  const current = Math.min(specIndex, maxIndex);
+
+  const items = track.querySelectorAll('.spec-carousel-item');
+  if (items.length === 0) return;
+
+  const firstItem = items[0];
+  const itemWidth = firstItem.offsetWidth;
+  const gap = 16;
+  const offset = current * (itemWidth + gap);
+  track.style.transform = `translateX(-${offset}px)`;
+
+  const prevBtn = document.getElementById('specPrev');
+  const nextBtn = document.getElementById('specNext');
+  if (prevBtn) {
+    prevBtn.classList.toggle('disabled', current === 0);
+  }
+  if (nextBtn) {
+    nextBtn.classList.toggle('disabled', current >= maxIndex);
+  }
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#specPrev')) {
+    const visible = getSpecVisible();
+    const maxIndex = specTotal - visible;
+    if (specIndex > 0) {
+      specIndex--;
+      updateSpecCarousel();
+    }
+  }
+  if (e.target.closest('#specNext')) {
+    const visible = getSpecVisible();
+    const maxIndex = specTotal - visible;
+    if (specIndex < maxIndex) {
+      specIndex++;
+      updateSpecCarousel();
+    }
+  }
+});
+
+window.addEventListener('resize', updateSpecCarousel);
+
+// Bind project card clicks
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', () => {
+    openProject(parseInt(card.dataset.project));
+  });
+});
+
+// ─── Showcase Category Filter ───
+const filterBtns = document.querySelectorAll('.showcase-filter-btn');
+const projectCards = document.querySelectorAll('.project-card');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Update active state
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+
+    projectCards.forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+});
+
+// Back button
+detailBack.addEventListener('click', closeProject);
+
+// ESC to close
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && detailOverlay.classList.contains('active')) {
+    closeProject();
+  }
+});
+
+// ─── Form Spec Interactions ───
+document.addEventListener('click', (e) => {
+  // Checkbox toggle
+  const checkbox = e.target.closest('.form-spec-checkbox:not(.disabled)');
+  if (checkbox) {
+    checkbox.classList.toggle('checked');
+    const textEl = checkbox.nextElementSibling;
+    if (textEl && textEl.classList.contains('form-spec-checkbox-text')) {
+      textEl.classList.toggle('selected', checkbox.classList.contains('checked'));
+    }
+    return;
+  }
+
+  // Radio toggle
+  const radio = e.target.closest('.form-spec-radio:not(.disabled)');
+  if (radio) {
+    const group = radio.closest('.form-spec-group');
+    if (group) {
+      group.querySelectorAll('.form-spec-radio').forEach(r => {
+        r.classList.remove('checked');
+        const txt = r.nextElementSibling;
+        if (txt) txt.classList.remove('selected');
+      });
+      radio.classList.add('checked');
+      const txt = radio.nextElementSibling;
+      if (txt) txt.classList.add('selected');
+    }
+    return;
+  }
+
+  // Toggle switch
+  const toggle = e.target.closest('.form-spec-toggle');
+  if (toggle) {
+    toggle.classList.toggle('on');
+    const textEl = toggle.nextElementSibling;
+    if (textEl && textEl.classList.contains('form-spec-toggle-text')) {
+      textEl.textContent = toggle.classList.contains('on') ? '开启' : '关闭';
+    }
+    return;
+  }
+
+  // Clear button
+  const clearBtn = e.target.closest('.form-spec-clear-btn');
+  if (clearBtn) {
+    const input = clearBtn.parentElement.querySelector('.form-spec-input');
+    if (input) input.value = '';
+    return;
+  }
+});
+
+// ─── Dropdown Select ───
+document.addEventListener('click', (e) => {
+  const dropdownItem = e.target.closest('.form-spec-dropdown-item');
+  if (dropdownItem) {
+    const wrap = dropdownItem.closest('.form-spec-dropdown-wrap');
+    const trigger = wrap.querySelector('.form-spec-dropdown-trigger');
+    const panel = wrap.querySelector('.form-spec-dropdown-panel');
+    const textEl = trigger.querySelector('.form-spec-dropdown-trigger-text');
+    const checkSvg = '<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="17" height="17" rx="2" fill="#009688" stroke="#009688"/><path d="M5 9L8 12L13 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    panel.querySelectorAll('.form-spec-dropdown-item').forEach(i => {
+      i.classList.remove('selected');
+      const iconEl = i.querySelector('.form-spec-dropdown-item-icon');
+      if (iconEl) iconEl.innerHTML = '';
+    });
+    dropdownItem.classList.add('selected');
+    const iconEl = dropdownItem.querySelector('.form-spec-dropdown-item-icon');
+    if (iconEl) iconEl.innerHTML = checkSvg;
+    textEl.textContent = dropdownItem.querySelector('.form-spec-dropdown-item-text').textContent;
+    textEl.classList.add('has-value');
+    panel.classList.remove('open');
+    trigger.classList.remove('open');
+    return;
+  }
+
+  const dropdownTrigger = e.target.closest('.form-spec-dropdown-trigger');
+  if (dropdownTrigger) {
+    const wrap = dropdownTrigger.closest('.form-spec-dropdown-wrap');
+    const panel = wrap.querySelector('.form-spec-dropdown-panel');
+    // Close all other dropdowns first
+    document.querySelectorAll('.form-spec-dropdown-panel.open').forEach(p => {
+      if (p !== panel) {
+        p.classList.remove('open');
+        p.closest('.form-spec-dropdown-wrap').querySelector('.form-spec-dropdown-trigger').classList.remove('open');
+      }
+    });
+    dropdownTrigger.classList.toggle('open');
+    panel.classList.toggle('open');
+    return;
+  }
+
+  // Close all dropdowns on outside click
+  document.querySelectorAll('.form-spec-dropdown-panel.open').forEach(p => {
+    p.classList.remove('open');
+    p.closest('.form-spec-dropdown-wrap').querySelector('.form-spec-dropdown-trigger').classList.remove('open');
+  });
+});
+
+// ─── Core Page Showcase (Framer-style Sidebar) ───
+document.addEventListener('click', (e) => {
+  const showcase = e.target.closest('.core-page-showcase');
+  if (!showcase) return;
+
+  const item = e.target.closest('.core-page-item');
+  if (!item) return;
+
+  const index = parseInt(item.dataset.index);
+  const items = showcase.querySelectorAll('.core-page-item');
+  const images = showcase.querySelectorAll('.core-page-visual-image');
+
+  // 切换展开状态
+  items.forEach((it, i) => {
+    if (i === index) {
+      it.classList.toggle('active');
+      // 如果展开，切换对应图片
+      if (it.classList.contains('active')) {
+        images.forEach((img, imgIdx) => {
+          img.classList.toggle('active', imgIdx === index);
+        });
+      }
+    } else {
+      // 关闭其他项
+      it.classList.remove('active');
+    }
+  });
+});
+
+// ─── Image Lightbox ───
+const lightbox = document.getElementById('image-lightbox');
+const lightboxImg = lightbox.querySelector('.image-lightbox-img');
+const lightboxClose = lightbox.querySelector('.image-lightbox-close');
+
+// 使用事件委托处理动态内容中的图片点击
+document.addEventListener('click', (e) => {
+  const corePageImg = e.target.closest('.core-page-visual-image');
+  if (corePageImg) {
+    e.stopPropagation();
+    lightboxImg.src = corePageImg.src;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return;
+  }
+
+  // 点击遮罩或关闭按钮关闭灯箱
+  if (lightbox.classList.contains('open') && (e.target === lightbox || e.target.closest('.image-lightbox-close'))) {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+</script>
+
+<!-- Image Lightbox -->
+<div id="image-lightbox" class="image-lightbox">
+  <div class="image-lightbox-close"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+  <img class="image-lightbox-img" src="" alt="">
+</div>
+
+</body>
+</html>

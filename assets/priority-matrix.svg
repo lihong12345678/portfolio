@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="'Inter','JetBrains Mono',monospace">
+  <!-- 背景 -->
+  <rect width="800" height="500" fill="#FAFAFA"/>
+
+  <!-- 标题 -->
+  <text x="40" y="48" fill="#C8553D" font-size="12" letter-spacing="0.08" font-weight="500">PRIORITY MATRIX</text>
+  <text x="40" y="72" fill="#0A0A0A" font-size="20" font-weight="400">需求优先级矩阵</text>
+
+  <!-- Y轴标签 -->
+  <text x="20" y="300" fill="#0A0A0A" font-size="11" letter-spacing="0.04" font-weight="500" transform="rotate(-90,20,300)">影响范围</text>
+  <text x="65" y="160" fill="#B0B0B0" font-size="10">高</text>
+  <text x="65" y="300" fill="#B0B0B0" font-size="10">中</text>
+  <text x="65" y="440" fill="#B0B0B0" font-size="10">低</text>
+
+  <!-- X轴标签 -->
+  <text x="440" y="480" fill="#0A0A0A" font-size="11" letter-spacing="0.04" font-weight="500">使用频次 →</text>
+  <text x="160" y="468" fill="#B0B0B0" font-size="10">低</text>
+  <text x="440" y="468" fill="#B0B0B0" font-size="10">中</text>
+  <text x="720" y="468" fill="#B0B0B0" font-size="10">高</text>
+
+  <!-- 网格线 -->
+  <line x1="100" y1="140" x2="760" y2="140" stroke="#E8E8E8" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="100" y1="280" x2="760" y2="280" stroke="#E8E8E8" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="100" y1="420" x2="760" y2="420" stroke="#E8E8E8" stroke-width="1"/>
+  <line x1="100" y1="140" x2="100" y2="420" stroke="#E8E8E8" stroke-width="1"/>
+  <line x1="280" y1="140" x2="280" y2="420" stroke="#E8E8E8" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="460" y1="140" x2="460" y2="420" stroke="#E8E8E8" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="760" y1="140" x2="760" y2="420" stroke="#E8E8E8" stroke-width="1"/>
+
+  <!-- 区域标签 -->
+  <!-- 高影响 + 高频次 = P0 -->
+  <rect x="460" y="140" width="300" height="140" rx="4" fill="#C8553D" opacity="0.06"/>
+  <text x="610" y="200" fill="#C8553D" font-size="13" font-weight="500" text-anchor="middle" letter-spacing="0.04">P0 · 紧急</text>
+  <text x="610" y="218" fill="#C8553D" font-size="10" text-anchor="middle">立即执行</text>
+
+  <!-- 高影响 + 中频次 = P1 -->
+  <rect x="280" y="140" width="180" height="140" rx="4" fill="#C8553D" opacity="0.03"/>
+  <text x="370" y="200" fill="#0A0A0A" font-size="13" font-weight="500" text-anchor="middle" letter-spacing="0.04">P1 · 重要</text>
+  <text x="370" y="218" fill="#6B6B6B" font-size="10" text-anchor="middle">计划执行</text>
+
+  <!-- 中影响 + 高频次 = P1 -->
+  <rect x="460" y="280" width="300" height="140" rx="4" fill="#0A0A0A" opacity="0.02"/>
+  <text x="610" y="340" fill="#6B6B6B" font-size="13" font-weight="500" text-anchor="middle" letter-spacing="0.04">P2 · 优化</text>
+  <text x="610" y="358" fill="#B0B0B0" font-size="10" text-anchor="middle">按需排期</text>
+
+  <!-- 低影响 + 低频次 = P3 -->
+  <rect x="100" y="280" width="180" height="140" rx="4" fill="#E8E8E8" opacity="0.5"/>
+  <text x="190" y="340" fill="#B0B0B0" font-size="13" font-weight="500" text-anchor="middle" letter-spacing="0.04">P3 · 兜底</text>
+  <text x="190" y="358" fill="#B0B0B0" font-size="10" text-anchor="middle">资源充裕时</text>
+
+  <!-- 需求点 -->
+  <!-- P0: 视觉统一 -->
+  <circle cx="640" cy="170" r="8" fill="#C8553D"/>
+  <text x="640" y="155" fill="#0A0A0A" font-size="10" font-weight="500" text-anchor="middle">视觉统一</text>
+
+  <!-- P0: 表单优化 -->
+  <circle cx="700" cy="210" r="8" fill="#C8553D"/>
+  <text x="700" y="195" fill="#0A0A0A" font-size="10" font-weight="500" text-anchor="middle">表单优化</text>
+
+  <!-- P1: 组件复用 -->
+  <circle cx="350" cy="170" r="7" fill="#0A0A0A"/>
+  <text x="350" y="155" fill="#0A0A0A" font-size="10" font-weight="500" text-anchor="middle">组件复用</text>
+
+  <!-- P1: 导出功能 -->
+  <circle cx="370" cy="200" r="7" fill="#0A0A0A"/>
+  <text x="370" y="228" fill="#0A0A0A" font-size="10" font-weight="500" text-anchor="middle">导出功能</text>
+
+  <!-- P2: 筛选器统一 -->
+  <circle cx="600" cy="310" r="7" fill="#6B6B6B"/>
+  <text x="600" y="295" fill="#6B6B6B" font-size="10" font-weight="500" text-anchor="middle">筛选器统一</text>
+
+  <!-- P2: 审批简化 -->
+  <circle cx="660" cy="340" r="7" fill="#6B6B6B"/>
+  <text x="660" y="365" fill="#6B6B6B" font-size="10" font-weight="500" text-anchor="middle">审批简化</text>
+
+  <!-- P1: 权限管理 -->
+  <circle cx="480" cy="180" r="7" fill="#0A0A0A"/>
+  <text x="480" y="165" fill="#0A0A0A" font-size="10" font-weight="500" text-anchor="middle">权限管理</text>
+
+  <!-- P3: 仪表盘 -->
+  <circle cx="160" cy="320" r="6" fill="#B0B0B0"/>
+  <text x="160" y="305" fill="#B0B0B0" font-size="10" font-weight="500" text-anchor="middle">仪表盘</text>
+
+  <!-- P3: 主题定制 -->
+  <circle cx="200" cy="360" r="6" fill="#B0B0B0"/>
+  <text x="200" y="385" fill="#B0B0B0" font-size="10" font-weight="500" text-anchor="middle">主题定制</text>
+</svg>
