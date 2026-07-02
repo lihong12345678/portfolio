@@ -266,22 +266,39 @@ section {
   margin-top: 16px;
 }
 
-.hero-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 28px;
+.hero-tags {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
 }
 
-.hero-tag::before {
+.hero-tag-item {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-body);
+  padding: 6px 12px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s var(--ease);
+}
+
+.hero-tag-item.highlight {
+  color: var(--color-accent);
+  background: rgba(255, 40, 75, 0.08);
+  position: relative;
+  padding-left: 20px;
+}
+
+.hero-tag-item.highlight::before {
   content: '';
-  display: inline-block;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -289,9 +306,15 @@ section {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
+.hero-tag-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--color-divider);
+}
+
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
+  0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+  50% { opacity: 0.5; transform: translateY(-50%) scale(0.8); }
 }
 
 .hero h1 {
@@ -458,6 +481,49 @@ section {
   margin-top: 20px;
 }
 
+/* 核心优势数据化展示 */
+.about-highlights {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.highlight-item {
+  text-align: center;
+  padding: 16px 8px;
+}
+
+.highlight-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.highlight-unit {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted);
+  margin-left: 2px;
+}
+
+.highlight-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-body);
+  letter-spacing: 0.01em;
+}
+
 .about-specs {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -490,6 +556,25 @@ section {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-primary);
+}
+
+.about-specs-item span:last-child.status-open {
+  color: var(--color-accent);
+  position: relative;
+  padding-left: 14px;
+}
+
+.about-specs-item span:last-child.status-open::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: pulse-dot 2s ease-in-out infinite;
 }
 
 /* ─── 03 Philosophy ─── */
@@ -2782,6 +2867,119 @@ display: flex;
   margin: 0 auto;
 }
 
+/* 技能矩阵 - 分层展示 */
+.specs-intro {
+  font-size: 16px;
+  color: var(--color-body);
+  max-width: 680px;
+  margin: 0 auto 48px;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.specs-layered {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1506px;
+  margin: 0 auto;
+}
+
+.spec-layer {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s var(--ease);
+}
+
+.spec-layer:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.spec-layer-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.spec-layer-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+}
+
+.spec-layer-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+}
+
+.spec-layer-desc {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-left: auto;
+  letter-spacing: 0.02em;
+}
+
+.spec-layer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.spec-layer-grid.single-row {
+  grid-template-columns: 1fr;
+}
+
+.spec-item-primary,
+.spec-item-secondary,
+.spec-item-tertiary {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  transition: all 0.2s var(--ease);
+}
+
+.spec-item-primary {
+  background: rgba(255, 40, 75, 0.03);
+  border: 1px solid rgba(255, 40, 75, 0.08);
+}
+
+.spec-item-primary:hover {
+  background: rgba(255, 40, 75, 0.06);
+  border-color: rgba(255, 40, 75, 0.15);
+}
+
+.spec-item-secondary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+}
+
+.spec-item-secondary:hover {
+  background: #f0f0f0;
+  border-color: #d0d0d0;
+}
+
+.spec-item-tertiary {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+}
+
+.spec-item-tertiary:hover {
+  background: var(--color-surface);
+}
+
 .spec-item {
   background: #f8f8f8;
   padding: 36px 32px;
@@ -2917,6 +3115,49 @@ display: flex;
   max-width: 560px;
 }
 
+/* 工作成果 */
+.timeline-achievements {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 680px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s var(--ease);
+}
+
+.achievement-item:hover {
+  background: rgba(255, 40, 75, 0.04);
+}
+
+.achievement-tag {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  padding: 3px 8px;
+  background: rgba(255, 40, 75, 0.08);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.achievement-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-body);
+  line-height: 1.6;
+}
+
 /* ─── 07 Contact ─── */
 .contact {
   text-align: center;
@@ -2976,6 +3217,161 @@ display: flex;
 
 .contact-cta:hover .arrow {
   transform: translate(4px, -4px);
+}
+
+/* 联系方式双按钮 */
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.contact-cta,
+.contact-cta-outline {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 20px 32px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all 0.3s var(--ease);
+  min-width: 220px;
+}
+
+.contact-cta {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.contact-cta:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(255, 40, 75, 0.3);
+}
+
+.contact-cta-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+}
+
+.contact-cta-outline:hover {
+  background: var(--color-primary);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.contact-cta-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.contact-cta-value {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.contact-cta .arrow,
+.contact-cta-outline .arrow {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 16px;
+  transition: transform 0.3s var(--ease);
+}
+
+.contact-cta {
+  position: relative;
+}
+
+.contact-cta-outline {
+  position: relative;
+}
+
+/* 简历下载 */
+.contact-resume {
+  text-align: center;
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  transition: all 0.3s var(--ease);
+}
+
+.resume-btn:hover {
+  background: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13, 13, 13, 0.15);
+}
+
+.resume-btn svg {
+  transition: transform 0.3s var(--ease);
+}
+
+.resume-btn:hover svg {
+  transform: translateY(2px);
+}
+
+.resume-hint {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* 快速信息 */
+.contact-quick-info {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.quick-info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-info-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.quick-info-value {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary);
 }
 
 .contact-links {
@@ -3090,6 +3486,14 @@ footer span {
   .form-spec-row-inline { flex-direction: column; gap: 4px; }
   .form-spec-field-label { text-align: left; min-width: unset; padding-top: 0; }
   .form-spec-inline-checkboxes { flex-direction: column; gap: 10px; }
+  /* 新增模块响应式 */
+  .about-highlights { grid-template-columns: repeat(2, 1fr); }
+  .spec-layer-grid { grid-template-columns: 1fr; }
+  .spec-layer-header { flex-wrap: wrap; gap: 8px; }
+  .spec-layer-desc { margin-left: 0; width: 100%; }
+  .contact-actions { flex-direction: column; align-items: center; }
+  .contact-cta, .contact-cta-outline { width: 100%; max-width: 320px; }
+  .contact-quick-info { gap: 24px; }
 }
 </style>
 </head>
@@ -3099,21 +3503,26 @@ footer span {
 <nav id="nav">
   <a href="#" class="nav-logo">L.H.</a>
   <ul class="nav-links">
-    <li><a href="#about">概览</a></li>
-    <li><a href="#philosophy">特性</a></li>
-    <li><a href="#showcase">展示</a></li>
-    <li><a href="#specs">规格</a></li>
-    <li><a href="#experience">版本记录</a></li>
-    <li><a href="#contact">开始使用</a></li>
+    <li><a href="#about">关于我</a></li>
+    <li><a href="#specs">技能</a></li>
+    <li><a href="#experience">经历</a></li>
+    <li><a href="#showcase">作品</a></li>
+    <li><a href="#contact">联系</a></li>
   </ul>
 </nav>
 
 <!-- 01 Hero -->
 <section class="hero" id="hero">
   <div class="hero-content">
-    <span class="hero-tag reveal">开放合作</span>
+    <div class="hero-tags reveal">
+      <span class="hero-tag-item">7 年经验</span>
+      <span class="hero-tag-divider"></span>
+      <span class="hero-tag-item">B 端 · 可视化 · 数字孪生</span>
+      <span class="hero-tag-divider"></span>
+      <span class="hero-tag-item highlight">开放机会</span>
+    </div>
     <h1 class="reveal">把复杂变<em>简单</em></h1>
-    <p class="hero-subtitle reveal">专注 B 端产品、数据可视化大屏与数字孪生智慧城市。兼具三维建模、MG 动画与视频剪辑能力。</p>
+    <p class="hero-subtitle reveal">专注 B 端产品、数据可视化大屏与数字孪生智慧城市。兼具三维建模、MG 动画与视频剪辑能力，让产品的视觉表达从静态页面延伸到空间和时间的维度。</p>
     <div class="hero-actions reveal">
       <a href="#showcase" class="hero-btn">查看作品</a>
       <a href="#contact" class="hero-btn-outline">联系我</a>
@@ -3140,20 +3549,37 @@ footer span {
 <section id="about">
   <div class="section-label reveal no-dot" style="justify-content: flex-start;">关于我</div>
   <div class="about">
-   
+
     <div class="about-content">
       <div class="about-text reveal">
-        <p>你好，我是 李红。我的工作不局限于单一画布——从 B 端 SaaS 产品的界面设计，到数据可视化大屏的信息架构，再到数字孪生智慧城市的三维场景构建，我始终在做同一件事：把复杂的信息变成可感知、可理解、可操作的视觉系统。</p>
-        <p>除了 UI 设计，我同时掌握三维建模、MG 动画和视频剪辑。这意味着我可以在一个项目中同时驾驭界面、三维场景和动态影像，让产品的视觉表达从静态页面延伸到空间和时间的维度。</p>
+        <p>你好，我是李红。专注 B 端产品与数据可视化领域 <strong>7 年</strong>，从 SaaS 产品的界面设计到智慧城市的数字孪生场景构建，始终在做同一件事：把复杂的信息变成可感知、可理解、可操作的视觉系统。</p>
+        <p>我同时掌握三维建模、MG 动画和视频剪辑，能够在单一项目中驾驭界面、三维场景与动态影像，让视觉表达从静态页面延伸到空间和时间维度。</p>
       </div>
+
+      <!-- 核心优势数据化展示 -->
+      <div class="about-highlights reveal">
+        <div class="highlight-item">
+          <span class="highlight-number">7<span class="highlight-unit">年</span></span>
+          <span class="highlight-label">B端设计经验</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-number">120<span class="highlight-unit">+</span></span>
+          <span class="highlight-label">设计系统组件</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-number">50<span class="highlight-unit">%</span></span>
+          <span class="highlight-label">协作效率提升</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-number">3<span class="highlight-unit">项</span></span>
+          <span class="highlight-label">全栈视觉能力</span>
+        </div>
+      </div>
+
       <div class="about-specs reveal">
         <div class="about-specs-item">
-          <span>经验</span>
-          <span>7 年</span>
-        </div>
-        <div class="about-specs-item">
           <span>领域</span>
-          <span>B 端 · 可视化 · 数字孪生</span>
+          <span>B 端产品 · 数据可视化 · 数字孪生</span>
         </div>
         <div class="about-specs-item">
           <span>地点</span>
@@ -3161,77 +3587,136 @@ footer span {
         </div>
         <div class="about-specs-item">
           <span>状态</span>
-          <span>开放机会</span>
+          <span class="status-open">开放机会</span>
         </div>
       </div>
     </div>
     <div class="about-photo reveal"><img src="assets/photo.jpg" alt="李红" style="width: 100%; height: 100%; object-fit: cover;"></div>
   </div>
-  
+
 </section>
 
 <!-- 05 Specs -->
 <section id="specs">
-  <div class="section-label reveal">技术规格</div>
-  <div class="specs-grid reveal">
-    <div class="spec-item">
-      <span class="spec-label">UI 设计</span>
-      <div class="spec-values">
-        <span class="spec-value">pixso</span>
-        <span class="spec-value">Sketch</span>
-        <span class="spec-value">Figma</span>
+  <div class="section-label reveal">技能矩阵</div>
+  <p class="specs-intro reveal">从界面设计到三维场景的全栈视觉能力，覆盖数字产品全生命周期。</p>
+  <div class="specs-layered reveal">
+
+    <!-- 核心能力层 -->
+    <div class="spec-layer">
+      <div class="spec-layer-header">
+        <span class="spec-layer-num">01</span>
+        <span class="spec-layer-title">核心能力</span>
+        <span class="spec-layer-desc">日常深度使用，主导项目产出</span>
+      </div>
+      <div class="spec-layer-grid">
+        <div class="spec-item-primary">
+          <span class="spec-label">UI 设计</span>
+          <div class="spec-values">
+            <span class="spec-value">Figma</span>
+            <span class="spec-value">Pixso</span>
+            <span class="spec-value">Sketch</span>
+          </div>
+        </div>
+        <div class="spec-item-primary">
+          <span class="spec-label">数据可视化</span>
+          <div class="spec-values">
+            <span class="spec-value">ECharts</span>
+            <span class="spec-value">DataV</span>
+            <span class="spec-value">大屏设计</span>
+          </div>
+        </div>
+        <div class="spec-item-primary">
+          <span class="spec-label">设计系统</span>
+          <div class="spec-values">
+            <span class="spec-value">Design Tokens</span>
+            <span class="spec-value">组件库</span>
+            <span class="spec-value">原子设计</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="spec-item">
-      <span class="spec-label">三维建模</span>
-      <div class="spec-values">
-        <span class="spec-value">C4D</span>
-        <span class="spec-value">Blender</span>
-        <span class="spec-value">SolidWorks</span>
+
+    <!-- 扩展技能层 -->
+    <div class="spec-layer">
+      <div class="spec-layer-header">
+        <span class="spec-layer-num">02</span>
+        <span class="spec-layer-title">扩展技能</span>
+        <span class="spec-layer-desc">三维与动效能力，支撑复杂场景表达</span>
+      </div>
+      <div class="spec-layer-grid">
+        <div class="spec-item-secondary">
+          <span class="spec-label">三维建模</span>
+          <div class="spec-values">
+            <span class="spec-value">C4D</span>
+            <span class="spec-value">Blender</span>
+            <span class="spec-value">SolidWorks</span>
+          </div>
+        </div>
+        <div class="spec-item-secondary">
+          <span class="spec-label">动效 / 视频</span>
+          <div class="spec-values">
+            <span class="spec-value">After Effects</span>
+            <span class="spec-value">Premiere Pro</span>
+          </div>
+        </div>
+        <div class="spec-item-secondary">
+          <span class="spec-label">数字孪生</span>
+          <div class="spec-values">
+            <span class="spec-value">Unreal Engine</span>
+            <span class="spec-value">CityEngine</span>
+            <span class="spec-value">QGIS3</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="spec-item">
-      <span class="spec-label">动效 / 视频</span>
-      <div class="spec-values">
-        <span class="spec-value">After Effects</span>
-        <span class="spec-value">Premiere Pro</span>
+
+    <!-- 协作工具层 -->
+    <div class="spec-layer">
+      <div class="spec-layer-header">
+        <span class="spec-layer-num">03</span>
+        <span class="spec-layer-title">协作工具</span>
+        <span class="spec-layer-desc">设计交付与团队协作</span>
+      </div>
+      <div class="spec-layer-grid single-row">
+        <div class="spec-item-tertiary">
+          <span class="spec-label">交付 / 协作</span>
+          <div class="spec-values">
+            <span class="spec-value">蓝湖</span>
+            <span class="spec-value">Design Tokens</span>
+            <span class="spec-value">Git 基础</span>
+            <span class="spec-value">语雀</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="spec-item">
-      <span class="spec-label">数据可视化</span>
-      <div class="spec-values">
-        <span class="spec-value">ECharts</span>
-        <span class="spec-value">DataV</span>
-      </div>
-    </div>
-    <div class="spec-item">
-      <span class="spec-label">数字孪生</span>
-      <div class="spec-values">
-        <span class="spec-value">Unreal Engine</span>
-        <span class="spec-value">CityEngine</span>
-        <span class="spec-value">QGIS3</span>
-      </div>
-    </div>
-    <div class="spec-item">
-      <span class="spec-label">协作 / 其他</span>
-      <div class="spec-values">
-        <span class="spec-value">pixso</span>
-        <span class="spec-value">蓝湖</span>
-        <span class="spec-value">Design Tokens</span>
-      </div>
-    </div>
+
   </div>
 </section>
 
 <!-- 06 Experience -->
 <section id="experience">
-  <div class="section-label reveal">版本记录</div>
+  <div class="section-label reveal">工作经历</div>
   <div class="timeline">
     <div class="timeline-item reveal">
-      <div class="timeline-year">2018 — 至今</div>
-      <div class="timeline-role"> UI / 可视化设计师</div>
+      <div class="timeline-year">2018 — 至今 · 7年</div>
+      <div class="timeline-role">UI / 可视化设计师</div>
       <div class="timeline-company">北京首信科技股份有限公司</div>
-      <div class="timeline-desc">负责数据可视化大屏与数字孪生项目的视觉设计，涵盖智慧城市、智慧园区等多个场景。同时参与 B 端产品界面的设计系统搭建与组件库维护。</div>
+      <div class="timeline-desc">负责数据可视化大屏与数字孪生项目的视觉设计，涵盖智慧城市、智慧园区、应急救援等多个场景。同时参与 B 端产品界面的设计系统搭建与组件库维护，输出 120+ 组件，设计与前端协作效率提升 50%。</div>
+      <div class="timeline-achievements">
+        <div class="achievement-item">
+          <span class="achievement-tag">数据可视化</span>
+          <span class="achievement-text">主导智慧城市指挥中心大屏设计，覆盖监控告警、AAA 业务感知、终端感知等核心模块</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-tag">设计系统</span>
+          <span class="achievement-text">从 0 到 1 搭建企业级 SaaS 设计系统，统一 3 条产品线视觉语言</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-tag">数字孪生</span>
+          <span class="achievement-text">负责智慧园区数字孪生项目的三维场景构建与视觉设计</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -3345,21 +3830,55 @@ footer span {
 
 <!-- 07 Contact -->
 <section class="contact" id="contact">
-  <div class="section-label reveal" style="justify-content: center;">开始使用</div>
+  <div class="section-label reveal" style="justify-content: center;">联系我</div>
   <h2 class="reveal">一起做点<em>好设计</em></h2>
-  <p class="contact-desc reveal">如果你正在寻找一位能同时驾驭界面设计、数据可视化、三维场景与动态影像的设计师，欢迎随时联系我。</p>
-  <a href="tel:15010393697" class="contact-cta reveal">
-    15010393697 <span class="arrow">↗</span>
-  </a>
-  <div class="contact-links reveal">
-    <a href="mailto:1281116099@qq.com">1281116099@qq.com</a>
+  <p class="contact-desc reveal">7 年 B 端与可视化设计经验，随时欢迎沟通职位机会或项目合作。</p>
+
+  <div class="contact-actions reveal">
+    <a href="tel:15010393697" class="contact-cta">
+      <span class="contact-cta-label">电话联系</span>
+      <span class="contact-cta-value">15010393697</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="mailto:1281116099@qq.com" class="contact-cta-outline">
+      <span class="contact-cta-label">邮箱联系</span>
+      <span class="contact-cta-value">1281116099@qq.com</span>
+      <span class="arrow">↗</span>
+    </a>
+  </div>
+
+  <div class="contact-resume reveal">
+    <a href="assets/李红-简历.pdf" download class="resume-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span>下载简历 PDF</span>
+    </a>
+    <p class="resume-hint">含完整项目经历与技能详情，建议在电脑端查看</p>
+  </div>
+
+  <div class="contact-quick-info reveal">
+    <div class="quick-info-item">
+      <span class="quick-info-label">期望岗位</span>
+      <span class="quick-info-value">高级 UI / 可视化设计师</span>
+    </div>
+    <div class="quick-info-item">
+      <span class="quick-info-label">工作地点</span>
+      <span class="quick-info-value">北京（可远程沟通）</span>
+    </div>
+    <div class="quick-info-item">
+      <span class="quick-info-label">到岗时间</span>
+      <span class="quick-info-value">面议</span>
+    </div>
   </div>
 </section>
 
 <!-- Footer -->
 <footer>
-  <span>&copy; 2026 L.X.</span>
-  <span>用克制做设计</span>
+  <span>&copy; 2026 李红 · L.H.</span>
+  <span>B 端 · 数据可视化 · 数字孪生</span>
 </footer>
 
 <script>
